@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function Table(props) {
-  return <div></div>;
+  return <div></div>
 }
 
-export default Table;
+export default Table

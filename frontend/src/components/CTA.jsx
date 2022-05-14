@@ -7,16 +7,16 @@ import {
   Flex,
   Box,
   useMediaQuery,
-} from '@chakra-ui/react';
-import React from 'react';
-import SpreadLove from '../assets/spread_love.svg';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
-import { useColorModeValue } from '@chakra-ui/react';
+} from '@chakra-ui/react'
+import React from 'react'
+import SpreadLove from '../assets/spread_love.svg'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
+import { Link as RouterLink } from 'react-router-dom'
+import { useColorModeValue } from '@chakra-ui/react'
 
 export default function CTA(props) {
-  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)');
-  const variant = isSmallerThan500 ? 6 : 0;
+  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
+  const variant = isSmallerThan500 ? 6 : 0
   return (
     <Box pt={variant} bg={useColorModeValue('gray.100', 'gray.800')}>
       <Flex
@@ -55,5 +55,5 @@ export default function CTA(props) {
         </Box>
       </Flex>
     </Box>
-  );
+  )
 }

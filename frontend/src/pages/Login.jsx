@@ -11,38 +11,53 @@ import {
   Heading,
   useColorModeValue,
   FormErrorMessage,
-} from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+  useMediaQuery,
+} from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import Navbar from '../components/Navbar'
 
 export default function Login(props) {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm()
 
   function onSubmit(values) {
     //TODO: API
     return new Promise(resolve => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve();
-      }, 1000);
-    });
+        alert(JSON.stringify(values, null, 2))
+        resolve()
+      }, 1000)
+    })
   }
+
+  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
+  const variant = isSmallerThan500 ? 6 : 150
 
   return (
     <>
+      <Navbar />
       <Flex
         minH={'100vh'}
-        align={'center'}
         justify={'center'}
         // bg={useColorModeValue('gray.50', 'gray.800')}
-        bgGradient={'linear(to-bl, teal.100 0%, orange.100 30%, blue.100 90%)'}
+        bgGradient={useColorModeValue(
+          'linear(to-bl, teal.100 0%, orange.100 30%, blue.100 90%)',
+          'gray.800'
+        )}
       >
         {/* Login CTA */}
-        <Stack spacing={8} mx={'auto'} minW={'sm'} maxW={'lg'} py={12} px={6}>
+        <Stack
+          spacing={8}
+          mx={'auto'}
+          minW={'sm'}
+          maxW={'lg'}
+          py={variant}
+          px={6}
+        >
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>登入帳號</Heading>
             <p fontSize={'lg'} color={'gray.600'}>
@@ -124,5 +139,5 @@ export default function Login(props) {
         </Stack>
       </Flex>
     </>
-  );
+  )
 }

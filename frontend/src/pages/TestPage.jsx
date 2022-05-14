@@ -1,40 +1,51 @@
-import { Box } from '@chakra-ui/react';
-import React from 'react';
-import { useQuery } from 'react-query';
+import React from 'react'
+import {
+  useGetExchangesQuery,
+  useGetExchangeByIdQuery,
+  useGetExchangeByUidQuery,
+  useGetDemandExchangeByUidQuery,
+  useGetSupplyExchangeByUidQuery,
+} from '../features/exchangeApi'
 
-const fetchExchanges = async () => {
-  const res = await fetchExchanges('https://swapi.dev/api/planets/');
-  return res.json();
-};
-
-function TestPage() {
-  const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch('http://127.0.0.1:5000/exchanges/').then(res => res.json())
-  );
-
-  if (isLoading) return 'Loading...';
-
-  if (error) return 'An error has occurred: ' + error.message;
-
-  console.log(data);
+export default function TestPage() {
+  const { data, error, isLoading, isFetching, isSuccess } =
+    useGetExchangeByIdQuery('3')
   return (
     <div>
-      {data.map(exchange => {
-        return (
-          <Box>
-            <p>date_added: {exchange.date_added}</p>
-            <p>id: {exchange.id}</p>
-            <p>item: {exchange.item}</p>
-            <p>notes: {exchange.notes}</p>
-            <p>provider_uid: {exchange.provider_uid}</p>
-            <p>receiver_uid: {exchange.receiver_uid}</p>
-            <p>region: {exchange.region}</p>
-            <p>status: {exchange.status}</p>
-          </Box>
-        );
-      })}
+      <h1>Test Page</h1>
+      {isLoading && <h2>Loading...</h2>}
+      {isFetching && <h2>Fetching...</h2>}
+      {error && <h2>Error: {error.message}</h2>}
+      {isSuccess && <p>{data.item}</p>}
     </div>
-  );
-}
+  )
 
-export default TestPage;
+  // 1.Example of useGetExchangesQuery
+  //   useGetExchangesQuery()
+  // return (
+  //   <div>
+  //     <h1>Test Page</h1>
+  //     {isLoading && <h2>Loading...</h2>}
+  //     {isFetching && <h2>Fetching...</h2>}
+  //     {error && <h2>Error: {error.message}</h2>}
+  //     {isSuccess && (
+  //       <div>
+  //         {data?.map(exchange => {
+  //           return (
+  //             <div key={exchange.id}>
+  //               <span>id: {exchange.id}</span>
+  //               <span>receiver_uid: {exchange.receiver_uid}</span>
+  //               <span>provider_uid: {exchange.provider_uid}</span>
+  //               <span>item: {exchange.item}</span>
+  //               <span>region: {exchange.region}</span>
+  //               <span>status: {exchange.status}</span>
+  //               <span>notes: {exchange.notes}</span>
+  //               <span>date_added: {exchange.date_added}</span>
+  //             </div>
+  //           )
+  //         })}
+  //       </div>
+  //     )}
+  //   </div>
+  // )
+}

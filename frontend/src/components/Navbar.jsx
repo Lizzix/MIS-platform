@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   Box,
   Flex,
@@ -18,19 +18,19 @@ import {
   ButtonGroup,
   useMediaQuery,
   IconButton,
-} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
+} from '@chakra-ui/react'
+import { HamburgerIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { Link as RouterLink } from 'react-router-dom'
 
 const logoStyle = {
   fontSize: 20,
   color: 'white',
   fontWeight: 'bold',
-};
+}
 
 function NotLogined({ colorMode, toggleColorMode }) {
-  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)');
+  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
   return (
     <>
       {isSmallerThan500 ? (
@@ -63,27 +63,27 @@ function NotLogined({ colorMode, toggleColorMode }) {
       ) : (
         <Flex alignItems={'center'}>
           <ButtonGroup direction={'row'} spacing={2}>
-            <Button onClick={toggleColorMode}>
+            <Button onClick={toggleColorMode} border={'1px solid #EDF2F7'}>
               {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <Button as={RouterLink} to="/signup">
+            <Button as={RouterLink} to="/signup" border={'1px solid #EDF2F7'}>
               註冊
             </Button>
-            <Button as={RouterLink} to="/login">
+            <Button as={RouterLink} to="/login" border={'1px solid #EDF2F7'}>
               登入
             </Button>
           </ButtonGroup>
         </Flex>
       )}
     </>
-  );
+  )
 }
 
 function Logined({ colorMode, toggleColorMode }) {
   return (
     <Flex alignItems={'center'}>
-      <Stack direction={'row'} spacing={7}>
-        <Button onClick={toggleColorMode}>
+      <ButtonGroup spacing={5}>
+        <Button onClick={toggleColorMode} border={'1px solid #EDF2F7'}>
           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         </Button>
         <Menu>
@@ -117,14 +117,13 @@ function Logined({ colorMode, toggleColorMode }) {
             <MenuItem>登出</MenuItem>
           </MenuList>
         </Menu>
-      </Stack>
+      </ButtonGroup>
     </Flex>
-  );
+  )
 }
 
 export default function Navbar() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode()
   return (
     <Box bg={useColorModeValue('teal.400', 'teal.500')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -135,5 +134,5 @@ export default function Navbar() {
         <NotLogined colorMode={colorMode} toggleColorMode={toggleColorMode} />
       </Flex>
     </Box>
-  );
+  )
 }

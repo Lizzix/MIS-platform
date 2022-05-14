@@ -12,33 +12,55 @@ import {
   FormErrorMessage,
   useMediaQuery,
   Image,
-} from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import QRcode from '../assets/qr-code.svg';
-import SocialShare from '../assets/social_share.svg';
+} from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import QRcode from '../assets/qr-code.svg'
+import SocialShare from '../assets/social_share.svg'
+import Navbar from '../components/Navbar'
+import { useSignupAccountMutation } from '../features/accountApi'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 
 export default function SignUp() {
-  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)');
-  const variant = isSmallerThan500 ? 6 : 0;
+  const [isSmallerThan900] = useMediaQuery('(max-width: 900px)')
+  const variant = isSmallerThan900 ? 6 : 0
+
+  const dispatch = useDispatch()
+  const [trigger, result] = useSignupAccountMutation()
+
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm()
 
   function onSubmit(values) {
-    //TODO: API
-    return new Promise(resolve => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve();
-      }, 1000);
-    });
+    trigger(values)
+      .then(result => {
+        if (result.data.message == 'Account already exists') {
+          // msg = '此電子郵件地址已被註冊過。'
+        } else {
+          // msg = '註冊成功！'
+        }
+      })
+      .catch(error => {
+        // msg = '伺服器沒有回應，請稍後再試。'
+      })
   }
+
+  // function onSubmit(values) {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       alert(JSON.stringify(values, null, 2))
+  //       resolve()
+  //     }, 1000)
+  //   })
+  // }
 
   return (
     <>
+      <Navbar />
       <Flex
         pt={variant}
         minH={'100vh'}
@@ -46,8 +68,10 @@ export default function SignUp() {
         justify={'center'}
         direction={'row'}
         wrap={'wrap'}
-        // bg={useColorModeValue('gray.50', 'gray.800')}
-        bgGradient={'linear(to-bl, teal.100 0%, orange.100 30%, blue.100 90%)'}
+        bgGradient={useColorModeValue(
+          'linear(to-bl, teal.100 0%, orange.100 30%, blue.100 90%)',
+          'gray.800'
+        )}
       >
         {/* SignUp CTA */}
         <Stack spacing={8} mx={6} maxW={'lg'} px={6}>
@@ -61,7 +85,7 @@ export default function SignUp() {
           </Stack>
           {/* SignUp Form */}
           <Box
-            minW={'sm'}
+            minW={'336px'}
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
@@ -103,30 +127,30 @@ export default function SignUp() {
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={errors.lineid}>
-                  <FormLabel htmlFor="lineid">Line ID</FormLabel>
+                <FormControl isInvalid={errors.line_id}>
+                  <FormLabel htmlFor="line_id">Line ID</FormLabel>
                   <Input
-                    id="lineid"
-                    {...register('lineid', {
+                    id="line_id"
+                    {...register('line_id', {
                       required: '此欄位為必填',
                     })}
                   />
                   <FormErrorMessage>
-                    {errors.lineid && errors.lineid.message}
+                    {errors.line_id && errors.line_id.message}
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl id="linename" isInvalid={errors.linename}>
-                  <FormLabel htmlFor="linename">Line 暱稱</FormLabel>
+                <FormControl id="username" isInvalid={errors.username}>
+                  <FormLabel htmlFor="username">Line 暱稱</FormLabel>
                   <Input
-                    id="linename"
+                    id="username"
                     placeholder="必須為當前的Line暱稱"
-                    {...register('linename', {
+                    {...register('username', {
                       required: '此欄位為必填',
                     })}
                   />
                   <FormErrorMessage>
-                    {errors.linename && errors.linename.message}
+                    {errors.username && errors.username.message}
                   </FormErrorMessage>
                 </FormControl>
                 <Box my={3} />
@@ -156,24 +180,25 @@ export default function SignUp() {
         </Stack>
         {/* QRcode */}
         <Box
-          minW="380px"
+          maxW="384px"
+          minW={'336px'}
           rounded="lg"
           p={8}
           m={6}
           spacing={1}
-          shadow="md"
+          shadow="lg"
           align="center"
-          background="white"
+          bg={useColorModeValue('white', 'gray.700')}
         >
           <p fontSize="xl" fontWeight="bold">
             別忘了加入我們的Line Bot👇
             <br />
             媒合成功時會收到即時通知哦！
           </p>
-          <Image src={SocialShare} alt="QR code" boxSize="250px" />
+          <Image src={SocialShare} alt="QR code" boxSize="260px" />
           <Image src={QRcode} alt="QR code" boxSize="270px" />
         </Box>
       </Flex>
     </>
-  );
+  )
 }

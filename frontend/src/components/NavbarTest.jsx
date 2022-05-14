@@ -1,5 +1,5 @@
-import { Box, Flex, Button, Stack, Link } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Box, Flex, Button, Stack, Link } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
 
 export default function NavbarTest() {
   return (
@@ -46,5 +46,5 @@ export default function NavbarTest() {
         </Flex>
       </Flex>
     </Box>
-  );
+  )
 }

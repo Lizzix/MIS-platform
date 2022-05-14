@@ -16,47 +16,41 @@ import {
   Textarea,
   Image,
   HStack,
-} from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import Navbar from '../components/Navbar';
-import REGIONS from '../global/Constants';
-import AddPost from '../assets/wall_post.svg';
+} from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import Navbar from '../components/Navbar'
+import CONSTANTS from '../global/Constants'
+import AddPost from '../assets/wall_post.svg'
 
 function NewRequest() {
-  const [isSmallerThan500] = useMediaQuery('(max-width: 500px)');
-  const variant = isSmallerThan500 ? 6 : 0;
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm()
 
   function onSubmit(values) {
     //TODO: API
     return new Promise(resolve => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve();
-      }, 1000);
-    });
+        alert(JSON.stringify(values, null, 2))
+        resolve()
+      }, 1000)
+    })
   }
   return (
-    <Box
-      height={'100vh'}
-      width={'100vh'}
-      bg={useColorModeValue('gray.100', 'gray.800')}
-    >
+    <Box height={'100vh'} bg={useColorModeValue('gray.100', 'gray.800')}>
       <Navbar />
       <center>
         <Heading mt={'30px'}>填寫物資需求表單</Heading>
         <Image src={AddPost} alt="add post" boxSize={'250px'} />
         <Box
-          m={0}
+          mx={5}
           p={10}
           maxW={'500px'}
-          minW={'300px'}
-          bg={useColorModeValue('white', 'gray.800')}
+          bg={useColorModeValue('white', 'gray.700')}
+          rounded={'lg'}
         >
           {/* Request Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,12 +77,12 @@ function NewRequest() {
                     required: '此欄位為必選',
                   })}
                 >
-                  {REGIONS.map((addr, idx) => {
+                  {CONSTANTS.REGIONS.map((addr, idx) => {
                     return (
                       <option key={idx} value={addr}>
                         {addr}
                       </option>
-                    );
+                    )
                   })}
                 </Select>
                 <FormErrorMessage>
@@ -113,10 +107,10 @@ function NewRequest() {
                 <HStack mb={5}>
                   <Checkbox
                     {...register('comfirm', {
-                      required: '請確認確認自己是否真的需要此項物資',
+                      required: '請確認自己是否真的有此需求',
                     })}
                   >
-                    我真心需要幫助，不會濫用好心人的物資。
+                    我真心需要幫助，不會濫用他人的善心。
                   </Checkbox>
                   <Flex grow={'true'}></Flex>
                 </HStack>
@@ -139,7 +133,7 @@ function NewRequest() {
         </Box>
       </center>
     </Box>
-  );
+  )
 }
 
-export default NewRequest;
+export default NewRequest
