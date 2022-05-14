@@ -12,6 +12,7 @@ import {
   FormErrorMessage,
   useMediaQuery,
   Image,
+  useToast,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -19,15 +20,16 @@ import QRcode from '../assets/qr-code.svg'
 import SocialShare from '../assets/social_share.svg'
 import Navbar from '../components/Navbar'
 import { useSignupAccountMutation } from '../features/accountApi'
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
   const [isSmallerThan900] = useMediaQuery('(max-width: 900px)')
   const variant = isSmallerThan900 ? 6 : 0
+  const toast = useToast()
 
-  const dispatch = useDispatch()
-  const [trigger, result] = useSignupAccountMutation()
+  const navigate = useNavigate()
+
+  const [trigger] = useSignupAccountMutation()
 
   const {
     handleSubmit,
@@ -35,28 +37,43 @@ export default function SignUp() {
     formState: { errors, isSubmitting },
   } = useForm()
 
-  function onSubmit(values) {
-    trigger(values)
-      .then(result => {
-        if (result.data.message == 'Account already exists') {
-          // msg = '此電子郵件地址已被註冊過。'
-        } else {
-          // msg = '註冊成功！'
-        }
-      })
-      .catch(error => {
-        // msg = '伺服器沒有回應，請稍後再試。'
-      })
+  const handleSuccess = () => {
+    navigate('/')
   }
 
-  // function onSubmit(values) {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       alert(JSON.stringify(values, null, 2))
-  //       resolve()
-  //     }, 1000)
-  //   })
-  // }
+  function onSubmit(values) {
+    trigger(values).then(
+      result => {
+        if (result.data.message == 'Account already exists') {
+          toast({
+            description: '此電子郵件地址已被註冊過。',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'bottom',
+          })
+        } else {
+          toast({
+            description: '註冊成功！轉跳至首頁。',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'bottom',
+          })
+          handleSuccess()
+        }
+      },
+      error => {
+        toast({
+          description: '註冊失敗！請稍後再試。',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom',
+        })
+      }
+    )
+  }
 
   return (
     <>

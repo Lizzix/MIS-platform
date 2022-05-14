@@ -16,6 +16,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Navbar from '../components/Navbar'
+import { useLoginAccountMutation } from '../features/accountApi'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login(props) {
   const {
@@ -24,15 +26,27 @@ export default function Login(props) {
     formState: { errors, isSubmitting },
   } = useForm()
 
+  const navigate = useNavigate()
+  const [trigger, result] = useLoginAccountMutation()
+
+  const handleSuccess = () => {
+    navigate('/')
+  }
+
   function onSubmit(values) {
-    //TODO: API
-    return new Promise(resolve => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
-        resolve()
-      }, 1000)
+    trigger(values).then(response => {
+      // console.log(response)
     })
   }
+
+  // function onSubmit(values) {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       alert(JSON.stringify(values, null, 2))
+  //       resolve()
+  //     }, 1000)
+  //   })
+  // }
 
   const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
   const variant = isSmallerThan500 ? 6 : 150

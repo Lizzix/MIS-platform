@@ -6,7 +6,7 @@ from models import Account
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 
-account_api = Namespace('accounts')
+account_api=Namespace('accounts')
 
 account_model = account_api.model(
     "accounts",
@@ -31,26 +31,25 @@ class SignUp(Resource):
 
         # Use email as an identifier
         signup_email = data.get("email")
-        db_account = Account.query.filter(
-            Account.email == signup_email).first()
+        db_account = Account.query.filter(Account.email==signup_email).first()
 
         if db_account is not None:
-            return jsonify({"message": "Account already exists"})
+            return jsonify({"message": f"Account already exists"})
 
         """ TODO: get line_user_id """
         signup_line_user_id = '12345'
 
         new_account = Account(
-            line_id=data.get("line_id"),
-            line_user_id=signup_line_user_id,
-            username=data.get("username"),
-            email=data.get("email"),
-            password=generate_password_hash(data.get("password"))
+            line_id = data.get("line_id"),
+            line_user_id = signup_line_user_id,
+            username =  data.get("username"),
+            email = data.get("email"),
+            password =  generate_password_hash(data.get("password"))
         )
 
         new_account.save()
         # return new_account
-        return make_response(jsonify({"message": "Account created successfully"}), 201)
+        return make_response(jsonify({"message":"Account created successfully"}),201)
 
 
 @account_api.route("/login")
@@ -76,9 +75,9 @@ class Login(Resource):
                 }
             )
         elif db_account is not None:
-            return jsonify({"message": "Wrong password."})
+            return jsonify({"message": "Wrong password"})
         else:
-            return jsonify({"message": "Account not found."})
+            return jsonify({"message": "Account not found"})
 
 
 @account_api.route('/refresh')
@@ -87,4 +86,4 @@ class RefreshResource(Resource):
     def post(self):
         current_user = get_jwt_identity()
         new_access_token = create_access_token(identity=current_user)
-        return make_response(jsonify({"access_token": new_access_token}), 200)
+        return make_response(jsonify({"access_token":new_access_token}),200)
