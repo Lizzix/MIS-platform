@@ -70,6 +70,7 @@ class Login(Resource):
             return jsonify(
                 {
                     "uid": db_account.uid,
+                    "username": db_account.username,
                     "access_token": access_token,
                     "refresh_token": refresh_token
                 }

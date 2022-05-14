@@ -12,31 +12,82 @@ import {
   useColorModeValue,
   FormErrorMessage,
   useMediaQuery,
+  useToast,
 } from '@chakra-ui/react'
+import Navbar from '../components/Navbar'
 import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import Navbar from '../components/Navbar'
 import { useLoginAccountMutation } from '../features/accountApi'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { login } from '../features/userSlice'
 
-export default function Login(props) {
+export default function Login() {
+  const toast = useToast()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [trigger] = useLoginAccountMutation()
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm()
 
-  const navigate = useNavigate()
-  const [trigger, result] = useLoginAccountMutation()
-
-  const handleSuccess = () => {
+  const handleSuccess = (uid, username, email, access_token, refresh_token) => {
+    dispatch(
+      login({
+        uid: uid,
+        username: username,
+        email: email,
+        access_token: access_token,
+        refresh_token: refresh_token,
+      })
+    )
     navigate('/')
   }
 
   function onSubmit(values) {
-    trigger(values).then(response => {
-      // console.log(response)
-    })
+    trigger(values).then(
+      result => {
+        console.log('onSubmit result: ', result)
+        if (
+          result.data.message == 'Account not found' ||
+          result.data.message == 'Wrong password'
+        ) {
+          toast({
+            description: '此電子郵件地址尚未註冊，或密碼錯誤。',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'bottom',
+          })
+        } else {
+          toast({
+            description: '登入成功！轉跳至首頁。',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'bottom',
+          })
+          handleSuccess(
+            result.data.uid,
+            result.data.username,
+            values.email,
+            result.data.access_token,
+            result.data.refresh_token
+          )
+        }
+      },
+      error => {
+        toast({
+          description: '登入失敗！請稍後再試。',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom',
+        })
+      }
+    )
   }
 
   // function onSubmit(values) {

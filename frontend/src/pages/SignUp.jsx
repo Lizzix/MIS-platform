@@ -26,11 +26,8 @@ export default function SignUp() {
   const [isSmallerThan900] = useMediaQuery('(max-width: 900px)')
   const variant = isSmallerThan900 ? 6 : 0
   const toast = useToast()
-
   const navigate = useNavigate()
-
   const [trigger] = useSignupAccountMutation()
-
   const {
     handleSubmit,
     register,
@@ -38,7 +35,7 @@ export default function SignUp() {
   } = useForm()
 
   const handleSuccess = () => {
-    navigate('/')
+    navigate('/login')
   }
 
   function onSubmit(values) {
@@ -54,7 +51,7 @@ export default function SignUp() {
           })
         } else {
           toast({
-            description: '註冊成功！轉跳至首頁。',
+            description: '註冊成功！轉跳至登入頁面。',
             status: 'success',
             duration: 5000,
             isClosable: true,
