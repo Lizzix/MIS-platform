@@ -49,7 +49,6 @@ export default function Login() {
   function onSubmit(values) {
     trigger(values).then(
       result => {
-        console.log('onSubmit result: ', result)
         if (
           result.data.message == 'Account not found' ||
           result.data.message == 'Wrong password'
