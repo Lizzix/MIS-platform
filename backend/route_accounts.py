@@ -37,7 +37,8 @@ class SignUp(Resource):
             return jsonify({"message": f"Account already exists"})
 
         """ TODO: get line_user_id """
-        signup_line_user_id = '12345'
+        """ line_user_id will be handled in the webhook of line api """
+        signup_line_user_id = ""
 
         new_account = Account(
             line_id = data.get("line_id"),
@@ -109,7 +110,7 @@ class ExchangeResource(Resource):
 
 @account_api.route('/refresh')
 class RefreshResource(Resource):
-    @jwt_required(refresh=True)
+    #@jwt_required(refresh=True)
     def post(self):
         current_user = get_jwt_identity()
         new_access_token = create_access_token(identity=current_user)

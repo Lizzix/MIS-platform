@@ -34,7 +34,7 @@ class ExchangesResource(Resource):
 
     @exchange_api.marshal_with(exchange_model)
     @exchange_api.expect(exchange_model)
-    @jwt_required()
+    #@jwt_required()
     def post(self):
         """ Create a new exchange """
         """
@@ -66,7 +66,7 @@ class ExchangeResource(Resource):
         return exchange
 
     @exchange_api.marshal_with(exchange_model)
-    @jwt_required()
+    #@jwt_required()
     def put(self, id):
         """ Update an exchange by id """
         exchange_to_update = Exchange.query.get_or_404(id)
@@ -78,7 +78,7 @@ class ExchangeResource(Resource):
         return exchange_to_update
 
     @exchange_api.marshal_with(exchange_model)
-    @jwt_required()
+    #@jwt_required()
     def delete(self, id):
         """ Delete an exchange """
         exchange_to_delete = Exchange.query.get_or_404(id)

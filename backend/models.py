@@ -22,6 +22,9 @@ class Account(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def update_line_user_id(self, line_user_id):
+        self.line_user_id = line_user_id
     
     """    
     def update(self, username, email, password):
