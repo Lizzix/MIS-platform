@@ -81,6 +81,32 @@ class Login(Resource):
             return jsonify({"message": "Account not found"})
 
 
+@account_api.route("/")
+class ExchangesResource(Resource):
+    
+    @account_api.marshal_list_with(account_model)
+    def get(self):
+        """ Get all accounts """
+        accounts = Account.query.all()
+        return accounts
+    
+    
+@account_api.route("/<int:uid>")
+class ExchangeResource(Resource):
+    @account_api.marshal_with(account_model)
+    def get(self, uid):
+        """ Get account information by uid """
+        account = Account.query.get_or_404(uid)
+        return account
+    
+    @account_api.marshal_with(account_model)    
+    def delete(self, uid):
+        """ Delete an account """
+        account_to_delete = Account.query.get_or_404(uid)
+        account_to_delete.delete()
+        return account_to_delete
+
+
 @account_api.route('/refresh')
 class RefreshResource(Resource):
     @jwt_required(refresh=True)
