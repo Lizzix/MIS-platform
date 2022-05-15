@@ -2,7 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import CONSTANTS from '../global/Constants'
 
 export const exchangeApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: CONSTANTS.BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: CONSTANTS.BASE_URL,
+    prepareHeaders: (headers, { getState, endpoint }) => {
+      const user = getState().user.user
+      if (user && endpoint !== 'refresh') {
+        headers.set('Authorization', `Bearer ${user.access_token}`)
+      }
+      return headers
+    },
+  }),
   reducerPath: 'exchangeApi',
   tagTypes: ['Exchange'],
   endpoints: builder => ({
@@ -23,7 +32,7 @@ export const exchangeApi = createApi({
     }),
     addExchage: builder.mutation({
       query: body => ({
-        url: `exchanges`,
+        url: `exchanges/`,
         method: 'POST',
         body: body,
       }),

@@ -15,19 +15,19 @@ def create_app():
     app = Flask(__name__)
 
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:12345678@localhost/exchange'
-    
+
     # Flask configuration
     pjdir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(pjdir, "data.sqlite")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = "HS256"
-    
+
     # Cross origin resource sharing
     CORS(app)
-    
+
     db.init_app(app) # Connect app to database
     # db.create_all()  # Create database
-    
+
     # JWT authentication manager
     JWTManager(app)
 
@@ -46,5 +46,5 @@ def create_app():
         def get(self):
             return "Hello Flask!"
     """
-  
+
     return app

@@ -6,17 +6,20 @@ import {
   useGetDemandExchangeByUidQuery,
   useGetSupplyExchangeByUidQuery,
 } from '../features/exchangeApi'
+// import { getState } from '../features/userSlice'
 
 export default function TestPage() {
-  const { data, error, isLoading, isFetching, isSuccess } =
-    useGetExchangeByIdQuery('3')
+  // const { data, error, isLoading, isFetching, isSuccess } =
+  //   useGetExchangeByIdQuery('3')
+  console.log(getState())
   return (
     <div>
       <h1>Test Page</h1>
-      {isLoading && <h2>Loading...</h2>}
-      {isFetching && <h2>Fetching...</h2>}
-      {error && <h2>Error: {error.message}</h2>}
-      {isSuccess && <p>{data.item}</p>}
+      {/* <p>getState()</p> */}
+      {/* // {isLoading && <h2>Loading...</h2>}
+      // {isFetching && <h2>Fetching...</h2>}
+      // {error && <h2>Error: {error.message}</h2>}
+      // {isSuccess && <p>{data.item}</p>} */}
     </div>
   )
 

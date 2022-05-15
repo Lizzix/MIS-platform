@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Personal from './pages/Personal'
 import NotFound from './pages/NotFound'
 import TestPage from './pages/TestPage'
+import ThankYou from './pages/ThankYou'
 
 function App() {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -19,6 +20,7 @@ function App() {
       <Route path="signup" element={<SignUp />} />
       <Route path="newrequest" element={<NewRequest />} />
       <Route path="personal" element={<Personal />} />
+      <Route path="thankyou" element={<ThankYou />} />
       <Route path="*" element={<NotFound />} />
       <Route path="test" element={<TestPage />} />
     </Routes>

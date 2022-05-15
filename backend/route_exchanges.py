@@ -25,19 +25,19 @@ exchange_model = exchange_api.model(
 
 @exchange_api.route("/")
 class ExchangesResource(Resource):
-    
+
     @exchange_api.marshal_list_with(exchange_model)
     def get(self):
         """ Get all exchanges """
         exchanges = Exchange.query.all()
         return exchanges
-    
+
     @exchange_api.marshal_with(exchange_model)
     @exchange_api.expect(exchange_model)
-    #@jwt_required()
+    @jwt_required()
     def post(self):
         """ Create a new exchange """
-        """ 
+        """
             @jwt_required() means JWT authenitcation is needed
             Request header needs to include the following:
                 "Authorization": "Bearer <access_token>"
@@ -52,11 +52,11 @@ class ExchangesResource(Resource):
             status = data.get("status"),
             notes =  data.get("notes"),
         )
-        
+
         new_exchange.save()
         return new_exchange
-    
-        
+
+
 @exchange_api.route("/<int:id>")
 class ExchangeResource(Resource):
     @exchange_api.marshal_with(exchange_model)
@@ -64,9 +64,9 @@ class ExchangeResource(Resource):
         """ Get an exchange by id """
         exchange = Exchange.query.get_or_404(id)
         return exchange
-    
+
     @exchange_api.marshal_with(exchange_model)
-    #@jwt_required()
+    @jwt_required()
     def put(self, id):
         """ Update an exchange by id """
         exchange_to_update = Exchange.query.get_or_404(id)
@@ -76,19 +76,19 @@ class ExchangeResource(Resource):
         if "provider_uid" in data:
             exchange_to_update.update_provider(data.get("provider_uid"))
         return exchange_to_update
-    
+
     @exchange_api.marshal_with(exchange_model)
-    #@jwt_required()
+    @jwt_required()
     def delete(self, id):
         """ Delete an exchange """
         exchange_to_delete = Exchange.query.get_or_404(id)
         exchange_to_delete.delete()
         return exchange_to_delete
-    
+
 
 @exchange_api.route("/<int:uid>/demand")
 class UserDemand(Resource):
-    
+
     @exchange_api.marshal_with(exchange_model)
     def get(self, uid):
         """ Get a user's demand by his uid """
@@ -98,7 +98,7 @@ class UserDemand(Resource):
 
 @exchange_api.route("/<int:uid>/supply")
 class UserSupply(Resource):
-    
+
     @exchange_api.marshal_with(exchange_model)
     def get(self, uid):
         """ Get a user's supply by his uid """

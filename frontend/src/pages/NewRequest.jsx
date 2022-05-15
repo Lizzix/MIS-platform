@@ -62,10 +62,8 @@ function NewRequest() {
       status: '等待中',
       notes: values.notes,
     }
-    console.log(payload)
     trigger(payload).then(
       result => {
-        console.log('onSubmit result: ', result)
         toast({
           description: '送出成功！轉跳至首頁。',
           status: 'success',
@@ -73,7 +71,7 @@ function NewRequest() {
           isClosable: true,
           position: 'bottom',
         })
-        // handleSuccess()
+        handleSuccess()
       },
       error => {
         toast({
