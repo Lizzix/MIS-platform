@@ -25,6 +25,7 @@ class Account(db.Model):
 
     def update_line_user_id(self, line_user_id):
         self.line_user_id = line_user_id
+        db.session.commit()
     
     """    
     def update(self, username, email, password):

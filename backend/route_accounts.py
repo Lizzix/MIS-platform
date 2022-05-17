@@ -38,7 +38,7 @@ class SignUp(Resource):
 
         """ TODO: get line_user_id """
         """ line_user_id will be handled in the webhook of line api """
-        signup_line_user_id = ""
+        signup_line_user_id = "12345"
 
         new_account = Account(
             line_id = data.get("line_id"),

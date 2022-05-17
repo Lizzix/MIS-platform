@@ -3,8 +3,9 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from flask_jwt_extended import jwt_required
-from models import Exchange
+from models import Exchange, Account
 from datetime import datetime
+from flask import current_app as app
 
 exchange_api=Namespace('exchanges')
 
@@ -73,6 +74,17 @@ class ExchangeResource(Resource):
         data = request.get_json()
         if "status" in data:
             exchange_to_update.update_status(data.get("status"))
+
+            # if the updated status is "matched", inform both users with line messages.
+            if data.get("status") == "matched":
+                provider = Account.query.filter(Account.uid==exchange_to_update.provider_uid).first()
+                receiver = Account.query.filter(Account.uid==exchange_to_update.receiver_uid).first()
+                with app.app_context():
+                    import route_linebot
+                    from linebot.models import TextSendMessage
+                    route_linebot.line_bot_api.push_message(provider.line_user_id, TextSendMessage(text="matched, you are the provider."))
+                    #route_linebot.line_bot_api.push_message(receiver.line_user_id, TextSendMessage(text="matched, you are the receiver."))
+
         if "provider_uid" in data:
             exchange_to_update.update_provider(data.get("provider_uid"))
         return exchange_to_update
