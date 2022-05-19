@@ -16,7 +16,7 @@ export const exchangeApi = createApi({
   tagTypes: ['Exchange'],
   endpoints: builder => ({
     getExchanges: builder.query({
-      query: () => `exchanges`,
+      query: () => `exchanges/`,
     }),
     getExchangeById: builder.query({
       query: id => `exchanges/${id}`,
@@ -55,10 +55,15 @@ export const exchangeApi = createApi({
 
 export const {
   useGetExchangesQuery,
+  useLazyGetExchangesQuery,
   useGetExchangeByIdQuery,
+  useLazyGetExchangeByIdQuery,
   useGetExchangeByUidQuery,
+  useLazyGetExchangeByUidQuery,
   useGetDemandExchangeByUidQuery,
+  useLazyGetDemandExchangeByUidQuery,
   useGetSupplyExchangeByUidQuery,
+  useLazyGetSupplyExchangeByUidQuery,
   useAddExchageMutation,
   useUpdateExchangeMutation,
   useDeleteExchangeMutation,

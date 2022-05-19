@@ -7,12 +7,12 @@ import NewRequest from './pages/NewRequest'
 import Home from './pages/Home'
 import Personal from './pages/Personal'
 import NotFound from './pages/NotFound'
-import TestPage from './pages/TestPage'
 import ThankYou from './pages/ThankYou'
+// TODO: delete
+import TestPage from './pages/TestPage'
+import BasicTable from './components/BasicTable'
 
 function App() {
-  const { colorMode, toggleColorMode } = useColorMode()
-  const isDark = colorMode === 'dark'
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -21,8 +21,10 @@ function App() {
       <Route path="newrequest" element={<NewRequest />} />
       <Route path="personal" element={<Personal />} />
       <Route path="thankyou" element={<ThankYou />} />
+      <Route path="personal" element={<Personal />} />
       <Route path="*" element={<NotFound />} />
       <Route path="test" element={<TestPage />} />
+      <Route path="table" element={<BasicTable />} />
     </Routes>
   )
 }

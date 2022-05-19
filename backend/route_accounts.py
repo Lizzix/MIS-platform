@@ -72,6 +72,7 @@ class Login(Resource):
                 {
                     "uid": db_account.uid,
                     "username": db_account.username,
+                    "line_id": db_account.line_id,
                     "access_token": access_token,
                     "refresh_token": refresh_token
                 }
@@ -84,14 +85,14 @@ class Login(Resource):
 
 @account_api.route("/")
 class ExchangesResource(Resource):
-    
+
     @account_api.marshal_list_with(account_model)
     def get(self):
         """ Get all accounts """
         accounts = Account.query.all()
         return accounts
-    
-    
+
+
 @account_api.route("/<int:uid>")
 class ExchangeResource(Resource):
     @account_api.marshal_with(account_model)
@@ -99,8 +100,8 @@ class ExchangeResource(Resource):
         """ Get account information by uid """
         account = Account.query.get_or_404(uid)
         return account
-    
-    @account_api.marshal_with(account_model)    
+
+    @account_api.marshal_with(account_model)
     def delete(self, uid):
         """ Delete an account """
         account_to_delete = Account.query.get_or_404(uid)

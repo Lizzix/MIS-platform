@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback } from 'react'
 import {
   Box,
   Flex,
@@ -23,6 +23,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectUser } from '../features/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const logoStyle = {
   fontSize: 25,
@@ -97,22 +98,29 @@ function Logined({ colorMode, toggleColorMode }) {
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
   const toast = useToast()
+  const navigate = useNavigate()
+  const handleAccountPage = useCallback(
+    () => navigate('/personal', { replace: true }),
+    [navigate]
+  )
+  const handleHomepage = useCallback(
+    () => navigate('/', { replace: true }),
+    [navigate]
+  )
   const handleLogout = () => {
+    handleHomepage()
     dispatch(logout())
     toast({
       description: '您已成功登出。',
       status: 'info',
       duration: 3000,
       isClosable: true,
-      position: 'bottom',
+      position: 'top',
     })
   }
-  const handleAccountPage = () => {
-    //TODO: 轉跳個人頁面
-  }
+
   return (
     <>
-      {' '}
       {isSmallerThan500 ? (
         <Flex alignItems={'center'}>
           <Menu>
@@ -132,7 +140,7 @@ function Logined({ colorMode, toggleColorMode }) {
             <MenuList alignItems={'center'}>
               <Center>{user.username}</Center>
               <MenuDivider />
-              <MenuItem onClick={handleAccountPage}>媒合紀錄</MenuItem>
+              <MenuItem onClick={handleAccountPage}>管理媒合紀錄</MenuItem>
               <MenuItem onClick={toggleColorMode}>切換深淺主題</MenuItem>
               <MenuItem onClick={handleLogout}>登出</MenuItem>
             </MenuList>
@@ -165,7 +173,7 @@ function Logined({ colorMode, toggleColorMode }) {
             <MenuList alignItems={'center'}>
               <Center>{user.username}</Center>
               <MenuDivider />
-              <MenuItem onClick={handleAccountPage}>媒合紀錄</MenuItem>
+              <MenuItem onClick={handleAccountPage}>管理媒合紀錄</MenuItem>
               <MenuItem onClick={handleLogout}>登出</MenuItem>
             </MenuList>
           </Menu>
@@ -178,6 +186,7 @@ function Logined({ colorMode, toggleColorMode }) {
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode()
   const user = useSelector(selectUser)
+
   return (
     <Box bg={useColorModeValue('teal.400', 'teal.500')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>

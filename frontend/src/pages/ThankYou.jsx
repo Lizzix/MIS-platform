@@ -33,10 +33,10 @@ export default function ThankYou() {
           <Center>
             <Heading style={headingStyle}>感謝你的善心！</Heading>
           </Center>
-          <p>到媒合頁面就可以查看媒合資訊囉。</p>
+          <p>到「管理媒合紀錄」頁面就可以查看詳細資訊囉。</p>
           <Center>
-            <Button colorScheme="teal" as={RouterLink} to="/">
-              返回首頁
+            <Button colorScheme="teal" as={RouterLink} to="/personal">
+              前往管理媒合頁面
             </Button>
           </Center>
           <Image src={SuperThankYou} alt="Thank You A Lot" boxSize="400px" />

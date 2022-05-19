@@ -11,7 +11,6 @@ import {
 import React from 'react'
 import SpreadLove from '../assets/spread_love.svg'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
-import { Link as RouterLink } from 'react-router-dom'
 import { useColorModeValue } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'

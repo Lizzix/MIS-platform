@@ -5,6 +5,12 @@ export const accountApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: CONSTANTS.BASE_URL }),
   reducerPath: 'accountApi',
   endpoints: builder => ({
+    getAccounts: builder.query({
+      query: () => `accounts/`,
+    }),
+    getAccountByUid: builder.query({
+      query: uid => `accounts/${uid}`,
+    }),
     signupAccount: builder.mutation({
       query: body => ({
         url: `accounts/signup`,
@@ -25,11 +31,22 @@ export const accountApi = createApi({
         method: 'POST',
       }),
     }),
+    deleteAccount: builder.mutation({
+      query: uid => ({
+        url: `accounts/delete/${uid}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 })
 
 export const {
+  useGetAccountsQuery,
+  useLazyGetAccountsQuery,
+  useGetAccountByUidQuery,
+  useLazyGetAccountByUidQuery,
   useSignupAccountMutation,
   useLoginAccountMutation,
   useRefreshAccountMutation,
+  useDeleteAccountMutation,
 } = accountApi

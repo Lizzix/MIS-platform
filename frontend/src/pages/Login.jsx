@@ -33,11 +33,19 @@ export default function Login() {
     formState: { errors, isSubmitting },
   } = useForm()
 
-  const handleSuccess = (uid, username, email, access_token, refresh_token) => {
+  const handleSuccess = (
+    uid,
+    username,
+    line_id,
+    email,
+    access_token,
+    refresh_token
+  ) => {
     dispatch(
       login({
         uid: uid,
         username: username,
+        line_id: line_id,
         email: email,
         access_token: access_token,
         refresh_token: refresh_token,
@@ -71,6 +79,7 @@ export default function Login() {
           handleSuccess(
             result.data.uid,
             result.data.username,
+            result.data.line_id,
             values.email,
             result.data.access_token,
             result.data.refresh_token
@@ -88,15 +97,6 @@ export default function Login() {
       }
     )
   }
-
-  // function onSubmit(values) {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       alert(JSON.stringify(values, null, 2))
-  //       resolve()
-  //     }, 1000)
-  //   })
-  // }
 
   const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
   const variant = isSmallerThan500 ? 6 : 150
@@ -174,7 +174,7 @@ export default function Login() {
                     align={'start'}
                     justify={'space-between'}
                   >
-                    <Checkbox>記住登入資訊</Checkbox>
+                    <Checkbox defaultChecked="true">記住登入資訊</Checkbox>
                     <Link color={'blue.400'}>忘記密碼？</Link>
                     {/* TODO: Remember Me, Forget Password */}
                   </Stack>
