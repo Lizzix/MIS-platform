@@ -1,5 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import userReducer from '../features/userSlice'
+import exchangeReducer from '../features/exchangeSlice'
 import { exchangeApi } from '../features/exchangeApi'
 import { accountApi } from '../features/accountApi'
 import { persistStore, persistReducer } from 'redux-persist'
@@ -19,6 +21,7 @@ const customizedMiddleware = getDefaultMiddleware({
 const store = configureStore({
   reducer: {
     user: persisitedReducer,
+    exchanges: exchangeReducer,
     [exchangeApi.reducerPath]: exchangeApi.reducer,
     [accountApi.reducerPath]: accountApi.reducer,
   },
@@ -27,6 +30,8 @@ const store = configureStore({
       .concat(exchangeApi.middleware)
       .concat(accountApi.middleware),
 })
+
+setupListeners(store.dispatch)
 
 const persistor = persistStore(store)
 export { persistor }

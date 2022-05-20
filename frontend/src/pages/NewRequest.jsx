@@ -16,17 +16,18 @@ import {
   HStack,
   useToast,
 } from '@chakra-ui/react'
-import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Navbar from '../components/Navbar'
 import CONSTANTS from '../global/Constants'
 import AddPost from '../assets/wall_post.svg'
 import { useNavigate } from 'react-router-dom'
 import { useAddExchageMutation } from '../features/exchangeApi'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'
+import { useGetExchangesQuery } from '../features/exchangeApi'
 
 function NewRequest() {
+  const dispatch = useDispatch()
   const toast = useToast()
   const user = useSelector(selectUser)
   const navigate = useNavigate()
@@ -41,6 +42,8 @@ function NewRequest() {
     navigate('/')
   }
   const handleNotLogin = () => {
+    // useGetExchangesQuery()
+    // dispatch()
     navigate('/login')
   }
 

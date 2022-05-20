@@ -13,6 +13,10 @@ import {
 import Loading from '../components/Loading'
 import PersonalInformation from '../assets/personal_information.svg'
 
+function handleEditInfo() {
+  // TODO: 編輯資料功能
+}
+
 function Profile({ user }) {
   const [isSmallerThan500] = useMediaQuery('(max-width: 500px)')
   const variant = isSmallerThan500 ? 5 : 5
@@ -20,7 +24,9 @@ function Profile({ user }) {
   return (
     <Box pb="10">
       <Center>
-        <Heading as="h1">你好，{user.username}。</Heading>
+        <Heading as="h1">
+          你好，{user == null ? 'Username' : user.username}。
+        </Heading>
       </Center>
       <Flex
         align={'start'}
@@ -45,9 +51,11 @@ function Profile({ user }) {
             <Heading as="h2" fontSize={'20px'} color="teal.500">
               個人資料
             </Heading>
-            <p>電子郵件地址：{user.email}</p>
-            <p>Line ID：{user.line_id}</p>
-            <Button colorScheme="teal">編輯</Button>
+            <p>電子郵件地址：{user == null ? 'email' : user.email}</p>
+            <p>Line ID：{user == null ? 'Line ID' : user.line_id}</p>
+            <Button onClick={handleEditInfo} colorScheme="teal">
+              編輯
+            </Button>
           </Stack>
         </Flex>
         <Box>

@@ -2,9 +2,6 @@ import React, { useEffect } from 'react'
 import {
   Box,
   Flex,
-  Heading,
-  Stack,
-  Image,
   Accordion,
   AccordionItem,
   AccordionButton,

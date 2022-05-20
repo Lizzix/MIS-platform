@@ -55,15 +55,10 @@ export const exchangeApi = createApi({
 
 export const {
   useGetExchangesQuery,
-  useLazyGetExchangesQuery,
   useGetExchangeByIdQuery,
-  useLazyGetExchangeByIdQuery,
   useGetExchangeByUidQuery,
-  useLazyGetExchangeByUidQuery,
   useGetDemandExchangeByUidQuery,
-  useLazyGetDemandExchangeByUidQuery,
   useGetSupplyExchangeByUidQuery,
-  useLazyGetSupplyExchangeByUidQuery,
   useAddExchageMutation,
   useUpdateExchangeMutation,
   useDeleteExchangeMutation,

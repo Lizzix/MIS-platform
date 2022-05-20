@@ -7,11 +7,11 @@ import {
   Flex,
   Box,
   useMediaQuery,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
 import SpreadLove from '../assets/spread_love.svg'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
-import { useColorModeValue } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'

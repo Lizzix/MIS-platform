@@ -138,7 +138,7 @@ function Logined({ colorMode, toggleColorMode }) {
               />
             </MenuButton>
             <MenuList alignItems={'center'}>
-              <Center>{user.username}</Center>
+              <Center>{user == null ? 'Username' : user.username}</Center>
               <MenuDivider />
               <MenuItem onClick={handleAccountPage}>管理媒合紀錄</MenuItem>
               <MenuItem onClick={toggleColorMode}>切換深淺主題</MenuItem>
@@ -171,7 +171,7 @@ function Logined({ colorMode, toggleColorMode }) {
               />
             </MenuButton>
             <MenuList alignItems={'center'}>
-              <Center>{user.username}</Center>
+              <Center>{user == null ? 'Username' : user.username}</Center>
               <MenuDivider />
               <MenuItem onClick={handleAccountPage}>管理媒合紀錄</MenuItem>
               <MenuItem onClick={handleLogout}>登出</MenuItem>

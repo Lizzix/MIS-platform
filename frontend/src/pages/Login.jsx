@@ -174,7 +174,7 @@ export default function Login() {
                     align={'start'}
                     justify={'space-between'}
                   >
-                    <Checkbox defaultChecked="true">記住登入資訊</Checkbox>
+                    <Checkbox>記住登入資訊</Checkbox>
                     <Link color={'blue.400'}>忘記密碼？</Link>
                     {/* TODO: Remember Me, Forget Password */}
                   </Stack>
