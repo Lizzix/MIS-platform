@@ -14,3 +14,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+@media only screen and (min-width: 1100px) {
+  .text-trunc {
+    max-width: 300px !important;
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .text-trunc {
+    max-width: 445px !important;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .text-trunc {
+    max-width: 918px !important;
+  }
+}

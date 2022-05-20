@@ -3,7 +3,7 @@ import React from 'react'
 import { GlobalSearchFilter } from './table/GlobalSearchFilter'
 import { RegionFilter } from './table/RegionFilter'
 
-export const TableNavBar = props => {
+export const TableNavBar = ({ globalFilter, setGlobalFilter }) => {
   return (
     <Flex
       p="5"
@@ -15,14 +15,11 @@ export const TableNavBar = props => {
       <RegionFilter
         border="1px"
         borderColor="gray.400"
-        filter={props.globalFilter}
-        setFilter={props.setGlobalFilter}
+        filter={globalFilter}
+        setFilter={setGlobalFilter}
       />
       <Spacer />
-      <GlobalSearchFilter
-        filter={props.globalFilter}
-        setFilter={props.setGlobalFilter}
-      />
+      <GlobalSearchFilter filter={globalFilter} setFilter={setGlobalFilter} />
     </Flex>
   )
 }

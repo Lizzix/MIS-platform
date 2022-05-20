@@ -22,12 +22,10 @@ import CONSTANTS from '../global/Constants'
 import AddPost from '../assets/wall_post.svg'
 import { useNavigate } from 'react-router-dom'
 import { useAddExchageMutation } from '../features/exchangeApi'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'
-import { useGetExchangesQuery } from '../features/exchangeApi'
 
 function NewRequest() {
-  const dispatch = useDispatch()
   const toast = useToast()
   const user = useSelector(selectUser)
   const navigate = useNavigate()
@@ -40,10 +38,9 @@ function NewRequest() {
 
   const handleSuccess = () => {
     navigate('/')
+    window.location.reload()
   }
   const handleNotLogin = () => {
-    // useGetExchangesQuery()
-    // dispatch()
     navigate('/login')
   }
 
