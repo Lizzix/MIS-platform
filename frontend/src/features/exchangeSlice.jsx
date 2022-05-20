@@ -4,32 +4,32 @@ export const exchangeSlice = createSlice({
   name: 'exchanges',
   initialState: {
     exchanges: null,
-    user_request_exchanges: null,
-    user_provide_exchanges: null,
+    user_demand_exchanges: null,
+    user_supply_exchanges: null,
   },
   reducers: {
     setAllExchanges: (state, action) => {
       state.exchanges = action.payload
     },
-    setUserRequestExchanges: (state, action) => {
-      state.user_request_exchanges = action.payload
+    setUserDemandExchanges: (state, action) => {
+      state.user_demand_exchanges = action.payload
     },
-    setUserProvideExchanges: (state, action) => {
-      state.user_provide_exchanges = action.payload
+    setUserSupplyExchanges: (state, action) => {
+      state.user_supply_exchanges = action.payload
     },
   },
 })
 
 export const {
   setAllExchanges,
-  setUserRequestExchanges,
-  setUserProvideExchanges,
+  setUserDemandExchanges,
+  setUserSupplyExchanges,
 } = exchangeSlice.actions
 
 export const selectExchanges = state => state.exchanges.exchanges
 export const selectUserRequestExchanges = state =>
-  state.exchanges.user_request_exchanges
+  state.exchanges.user_demand_exchanges
 export const selectUserProvideExchanges = state =>
-  state.exchanges.user_provide_exchanges
+  state.exchanges.user_supply_exchanges
 
 export default exchangeSlice.reducer

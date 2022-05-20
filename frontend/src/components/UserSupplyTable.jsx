@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useState } from 'react'
-import axios from 'axios'
 import {
   Flex,
   Table,
@@ -11,8 +10,6 @@ import {
   TableContainer,
   useColorModeValue,
   Icon,
-  Box,
-  Spacer,
   Button,
   AlertDialog,
   AlertDialogBody,
@@ -22,27 +19,23 @@ import {
   AlertDialogOverlay,
   AlertDialogCloseButton,
   useDisclosure,
-  useToast,
+  Spinner,
 } from '@chakra-ui/react'
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  usePagination,
-} from 'react-table'
-import { useGetExchangesQuery } from '../features/exchangeApi'
+import { useTable, useSortBy } from 'react-table'
+import { useGetSupplyExchangeByUidQuery } from '../features/exchangeApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAllExchanges } from '../features/exchangeSlice'
 import { GrFormUp, GrFormDown, GrFormSubtract } from 'react-icons/gr'
-import { GlobalSearchFilter } from './table/GlobalSearchFilter'
-import { RegionFilter } from './table/RegionFilter'
 import { format } from 'date-fns'
-import { AddIcon } from '@chakra-ui/icons'
 import { selectUser } from '../features/userSlice'
 import './table/table.css'
+import { useGetAccountByUidQuery } from '../features/accountApi'
 
-export default function RequestedTable() {
-  const { data: fetchedData, isSuccess } = useGetExchangesQuery()
+export default function UserSupplyTable() {
+  const user = useSelector(selectUser)
+  const { data: fetchedData, isSuccess } = useGetSupplyExchangeByUidQuery(
+    user.uid
+  )
   const REQUESTED_COLUMNS = [
     {
       Header: '新增時間',
@@ -61,7 +54,6 @@ export default function RequestedTable() {
     {
       Header: '地區',
       accessor: 'region',
-      Filter: RegionFilter,
       filter: 'includes',
     },
     {
@@ -77,13 +69,11 @@ export default function RequestedTable() {
         <div>
           <Button
             onClick={e => handleClick(row.original)}
-            leftIcon={<AddIcon />}
             size="sm"
             colorScheme="yellow"
             variant="solid"
-            disabled={row.original.status != '等待中'}
           >
-            提供
+            查看聯絡方式
           </Button>
         </div>
       ),
@@ -100,71 +90,30 @@ export default function RequestedTable() {
     }
   }, [isSuccess])
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    prepareRow,
-    state,
-    setGlobalFilter,
-  } = useTable(
-    {
-      columns,
-      data,
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  )
-  const { pageIndex, globalFilter } = state
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    )
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
-  const [target, setTarget] = useState([])
-  const user = useSelector(selectUser)
-  const toast = useToast()
-  function handleClick(target_data) {
-    setTarget(target_data)
+  const [receiver_uid, setReceiver_uid] = useState('')
+  function handleClick(exchanges) {
+    setReceiver_uid(exchanges.receiver_uid)
     onOpen()
   }
-  function handleProvide() {
-    axios
-      .put('http://127.0.0.1:5000/exchanges/' + target.id, {
-        provider_uid: user.uid,
-        status: '媒合成功',
-      })
-      .then(
-        result => {
-          console.log(result)
-          toast({
-            description: '媒合成功！',
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-            position: 'bottom',
-          })
-          onClose()
-          // window.location.reload()
-        },
-        error => {
-          console.log(error)
-          toast({
-            description: '操作失敗！請稍後再試。',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-            position: 'bottom',
-          })
-          onClose()
-        }
-      )
-  }
+  const {
+    data: receiverInfo,
+    error,
+    isLoading,
+    isFetching,
+    isSuccess: success,
+  } = useGetAccountByUidQuery(receiver_uid)
+
   return (
     <>
       <AlertDialog
@@ -174,61 +123,40 @@ export default function RequestedTable() {
         isOpen={isOpen}
         isCentered
       >
-        <AlertDialogOverlay />
+        (receiverInfo.username == undefined)? (<AlertDialogOverlay />
         <AlertDialogContent>
-          <AlertDialogHeader>確定要提供嗎？</AlertDialogHeader>
+          <AlertDialogHeader>對方資料</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            物品名稱：{target.item}
-            <br />
-            地區：{target.region}
-            <br />
-            備註：{target.notes}
-            <br />
+            {isLoading || isFetching ? (
+              <center>
+                <Spinner />
+              </center>
+            ) : (
+              <>
+                Line 暱稱：{receiverInfo.username}
+                <br />
+                Line ID：{receiverInfo.line_id}
+                <br />
+                電子郵件地址：{receiverInfo.email}
+                <br />
+              </>
+            )}
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              取消
-            </Button>
-            <Button onClick={handleProvide} colorScheme="red" ml={3}>
-              確定
+            <Button onClick={onClose} colorScheme="blue" ml={3}>
+              關閉
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
+        ) : (
+        <Spinner />)
       </AlertDialog>
-      <Flex bg={useColorModeValue('gray.100', 'gray.800')}>
-        <Spacer />
-        <Flex w="80%" minW="80%" h="100vh" justify="start" direction="column">
-          <Flex
-            p="5"
-            justify={'center'}
-            direction="row"
-            align="start"
-            bg={useColorModeValue('gray.100', 'gray.800')}
-          >
-            <Button
-              mr="2"
-              colorScheme="teal"
-              onClick={() => window.location.reload()}
-            >
-              更新
-            </Button>
-            <RegionFilter
-              border="1px"
-              borderColor="gray.400"
-              filter={globalFilter}
-              setFilter={setGlobalFilter}
-            />
-            <Spacer />
-            <GlobalSearchFilter
-              filter={globalFilter}
-              setFilter={setGlobalFilter}
-            />
-          </Flex>
+      <Flex grow="true" bg={useColorModeValue('gray.100', 'gray.800')}>
+        <Flex grow="true" justify="start" direction="column">
           <TableContainer
             p="5"
             minW="850px"
-            rounded="lg"
             border="1px"
             borderColor="gray.400"
             overflowX="hidden"
@@ -264,7 +192,7 @@ export default function RequestedTable() {
                 ))}
               </Thead>
               <Tbody {...getTableBodyProps()}>
-                {page.map(row => {
+                {rows.map(row => {
                   prepareRow(row)
                   return (
                     <Tr {...row.getRowProps()}>
@@ -284,38 +212,8 @@ export default function RequestedTable() {
                 })}
               </Tbody>
             </Table>
-            <Box>
-              <center>
-                <Button
-                  onClick={() => previousPage()}
-                  disabled={!canPreviousPage}
-                  mx="2"
-                  mt="5"
-                  size="sm"
-                  colorScheme="teal"
-                  variant="outline"
-                >
-                  上一頁
-                </Button>
-                <Button
-                  onClick={() => nextPage()}
-                  disabled={!canNextPage}
-                  mx="2"
-                  mt="5"
-                  size="sm"
-                  colorScheme="teal"
-                  variant="outline"
-                >
-                  下一頁
-                </Button>
-              </center>
-            </Box>
-            <center>
-              第 {pageIndex + 1} / {pageOptions.length} 頁
-            </center>
           </TableContainer>
         </Flex>
-        <Spacer />
       </Flex>
     </>
   )
