@@ -72,21 +72,26 @@ class ExchangeResource(Resource):
         """ Update an exchange by id """
         exchange_to_update = Exchange.query.get_or_404(id)
         data = request.get_json()
+        if "provider_uid" in data:
+            exchange_to_update.update_provider(data.get("provider_uid"))
         if "status" in data:
             exchange_to_update.update_status(data.get("status"))
 
             # if the updated status is "matched", inform both users with line messages.
-            if data.get("status") == "matched":
+            if data.get("status") == "媒合成功":
                 provider = Account.query.filter(Account.uid==exchange_to_update.provider_uid).first()
                 receiver = Account.query.filter(Account.uid==exchange_to_update.receiver_uid).first()
+
+                # messages to be sent.
+                provider_message = "Matched! Please contact the receiver.\n" + "Username: {}\n".format(receiver.username) + "LINE ID: {}\n".format(receiver.line_id) + "Email: {}".format(receiver.email)
+                receiver_message = "Matched! Please contact the provider.\n" + "Username: {}\n".format(provider.username) + "LINE ID: {}\n".format(provider.line_id) + "Email: {}".format(provider.email)
+
                 with app.app_context():
                     import route_linebot
                     from linebot.models import TextSendMessage
-                    route_linebot.line_bot_api.push_message(provider.line_user_id, TextSendMessage(text="matched, you are the provider."))
-                    #route_linebot.line_bot_api.push_message(receiver.line_user_id, TextSendMessage(text="matched, you are the receiver."))
+                    route_linebot.line_bot_api.push_message(provider.line_user_id, TextSendMessage(text=provider_message))
+                    #route_linebot.line_bot_api.push_message(receiver.line_user_id, TextSendMessage(text=receiver_message))
 
-        if "provider_uid" in data:
-            exchange_to_update.update_provider(data.get("provider_uid"))
         return exchange_to_update
 
     @exchange_api.marshal_with(exchange_model)

@@ -8,7 +8,7 @@ import Personal from './pages/Personal'
 import NotFound from './pages/NotFound'
 import ThankYou from './pages/ThankYou'
 // TODO: delete
-import TestPage from './pages/TestPage'
+//import TestPage from './pages/TestPage'
 
 function App() {
   return (
