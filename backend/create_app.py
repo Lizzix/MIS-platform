@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from flask_restx import Api
+# from flask_restx import Api
 from exts import db
 import os
 from models import Exchange, Account
@@ -30,11 +30,11 @@ def create_app():
 
     # JWT authentication manager
     JWTManager(app)
-
+    
     # Set API
-    api=Api(app, doc='/docs')
-    api.add_namespace(exchange_api)
-    api.add_namespace(account_api)
+    # api=Api(app, doc='/docs')
+    # api.add_namespace(exchange_api)
+    # api.add_namespace(account_api)
 
     """ This is a test """
     """
