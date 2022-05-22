@@ -39,6 +39,7 @@ import { RegionFilter } from './table/RegionFilter'
 import { format } from 'date-fns'
 import { AddIcon } from '@chakra-ui/icons'
 import { selectUser } from '../features/userSlice'
+import { useNavigate } from 'react-router-dom'
 import './table/table.css'
 
 export default function RequestedTable() {
@@ -89,7 +90,7 @@ export default function RequestedTable() {
       ),
     },
   ]
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const columns = useMemo(() => REQUESTED_COLUMNS, [])
   const [data, setData] = useState([])
@@ -150,6 +151,7 @@ export default function RequestedTable() {
             position: 'bottom',
           })
           onClose()
+          navigate('/thankyou')
           // window.location.reload()
         },
         error => {
