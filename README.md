@@ -1,9 +1,16 @@
 # MIS-platform
 
-#### How to run the frontend
+#### How to Run Frontend
 
 ```shell
 cd frontend
 npm install
 npm run dev
+```
+
+#### How to Run Backend
+
+```shell
+cd backend
+python run.py
 ```
